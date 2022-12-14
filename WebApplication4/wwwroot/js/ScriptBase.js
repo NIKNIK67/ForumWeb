@@ -1,4 +1,1 @@
-﻿SendRateUp(id)
-{
-
-}
+﻿

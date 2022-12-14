@@ -40,6 +40,7 @@ namespace WebApplication4.Controllers
             if (ModelState.IsValid && HttpContext.User.Identity.IsAuthenticated)
             {
                 _provider.CreateArticle(model, _provider.UserId(HttpContext.User.FindFirst(ClaimTypes.Email).Value));
+                _provider.CreateLog(HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(), $"New article created: {model.Header}", _provider.UserId(HttpContext.User.Identities.First().FindFirst(ClaimTypes.Email)?.Value ?? ""));
                 return RedirectToAction("Index");
             }
             return View();
@@ -57,6 +58,7 @@ namespace WebApplication4.Controllers
                 List<Claim> claims = new List<Claim>() { new Claim(ClaimTypes.Email,model.Email.ToLower()),new Claim(ClaimTypes.Name,_provider.GetName(model))};
                 ClaimsIdentity identity = new ClaimsIdentity(claims, "Cookies");
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+                _provider.CreateLog(HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(), $"User Logged: {_provider.GetName(model)}", _provider.UserId(HttpContext.User.Identities.First().FindFirst(ClaimTypes.Email)?.Value ?? ""));
                 return RedirectToAction("Index");
             }
             return View();
@@ -67,6 +69,7 @@ namespace WebApplication4.Controllers
             if (ModelState.IsValid && _provider.CheckUser(model.Email.ToLower()))
             {
                 _provider.CreateUser(model);
+                _provider.CreateLog(HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(), $"New User Created: {model.Name}", _provider.UserId(HttpContext.User.Identities.First().FindFirst(ClaimTypes.Email)?.Value ?? ""));
                 return RedirectToAction("Index");
             }
             return View();
@@ -84,6 +87,8 @@ namespace WebApplication4.Controllers
                 model.ArticleId = param;
                 model.AuthorId = _provider.UserId(HttpContext.User.FindFirst(ClaimTypes.Email).Value);
                 _provider.CreateComment(model);
+                _provider.CreateLog(HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString(), $"Comment send to article: {model.ArticleId}, by user {model.AuthorId}", _provider.UserId(HttpContext.User.Identities.First().FindFirst(ClaimTypes.Email)?.Value ?? ""));
+
                 HttpContext.Response.Redirect($"/Main/Article/{param}");
             }
         }

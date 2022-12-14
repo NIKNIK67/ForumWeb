@@ -8,11 +8,11 @@ namespace WebApplication4
 {
     public class SQLDataProvider : IDataProvider
     {
-        public static string _connectionString;
+        public static string ConnectionString;
           
         public bool CheckUser(string email)
         {
-            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand command = conn.CreateCommand();
             command.CommandText = $"SELECT Count(*) FROM Users WHERE Email='{email}'";
@@ -27,7 +27,7 @@ namespace WebApplication4
 
         public bool CheckUser(string email, string password)
         {
-            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
             SqlCommand command = conn.CreateCommand();
             command.CommandText = $"SELECT Count(*) FROM Users WHERE password=HASHBYTES ( 'SHA2_256', @password ) And email=@email";
             command.Parameters.AddWithValue("@email", email);
@@ -43,7 +43,7 @@ namespace WebApplication4
         }
         public void CreateArticle(ArticleModel model,int UserId)
         {
-            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
             SqlCommand command = conn.CreateCommand();
             command.CommandText = $"INSERT INTO Articles (Header,Content,AuthorId,CreationDate) Values (@header,@content,@id,@date)";
             command.Parameters.AddWithValue("@header", model.Header);
@@ -56,7 +56,7 @@ namespace WebApplication4
         }
         public void CreateUser(RegisterModel user)
         {
-            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
             SqlCommand command = conn.CreateCommand();
             command.CommandText = $"INSERT INTO Users (name, email, password,CreationDate) VALUES (@name,@email,HASHBYTES ( 'SHA2_256', @password ),@date)";
             command.Parameters.AddWithValue("@name", user.Name);
@@ -71,7 +71,7 @@ namespace WebApplication4
 
         public ArticleModel GetArticle(int id)
         {
-            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
             SqlCommand command = conn.CreateCommand();
             command.CommandText = "SELECT Users.Name, Articles.Header,Articles.Content,Articles.ArticleId FROM Articles Inner join Users On AuthorId = Users.Id WHERE ArticleId=@id";
             command.Parameters.AddWithValue("@id",id);
@@ -87,7 +87,7 @@ namespace WebApplication4
 
         public List<ArticleModel> GetArticles()
         {
-            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
             SqlCommand command = conn.CreateCommand();
             command.CommandText = "SELECT Articles.Header,Articles.Content,Users.Name,Articles.ArticleId,Articles.CreationDate FROM Articles Inner join Users On AuthorId = Users.Id";
             conn.Open();
@@ -103,7 +103,7 @@ namespace WebApplication4
 
         public List<CommentModel> GetComments(int ArticleId)
         {
-            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand command = conn.CreateCommand();
             command.CommandText = "SELECT Comments.*,Users.name FROM Comments Inner join Users On AuthorId = Users.Id Where ArticleId =@ArticleId";
@@ -119,7 +119,7 @@ namespace WebApplication4
         }  
         public void CreateComment(CommentModel model)
         {
-            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand command = conn.CreateCommand();
             command.CommandText = "INSERT INTO Comments (AuthorId,Content,ParentId,ArticleId,CreationDate) Values (@AuthorId,@Content,@ParentId,@ArticleId,@date)";
@@ -134,7 +134,7 @@ namespace WebApplication4
         }
         public int UserId(string email)
         {
-            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
             SqlCommand command = conn.CreateCommand();
             command.CommandText = $"SELECT Id FROM Users WHERE Email = @Email";
             command.Parameters.AddWithValue("@Email", email);
@@ -145,7 +145,7 @@ namespace WebApplication4
         }
         public string GetName(LoginModel model)
         {
-            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
             SqlCommand command = conn.CreateCommand();
             command.CommandText = $"SELECT name FROM Users WHERE Email = @Email";
             command.Parameters.AddWithValue("@Email", model.Email);
@@ -157,7 +157,7 @@ namespace WebApplication4
 
         public void CreateLog(string IpAddress, string Content, int CallerId = -1)
         {
-            SqlConnection conn = new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
             SqlCommand command = conn.CreateCommand();
             command.CommandText = $"INSERT INTO Logs (CallerIpAddressV4,CallerId,Content) values (@CallerIpAddressV4,@CallerId,@Content)";
             command.Parameters.AddWithValue("@CallerIpAddressV4", IpAddress);

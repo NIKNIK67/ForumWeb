@@ -11,7 +11,7 @@ namespace Program
         public static void Main(params string[] args)
         {
 
-            SQLDataProvider._connectionString = args.Aggregate((x,y)=> x+" "+y);
+            SQLDataProvider.ConnectionString = args.Aggregate((x,y)=> x+" "+y);
             var builder = WebApplication.CreateBuilder();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddMvc();
