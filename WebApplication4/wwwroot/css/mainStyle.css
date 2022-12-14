@@ -1,0 +1,73 @@
+﻿.parent {
+    display: flex;
+    width: 90%;
+}
+.articleHeader{
+    text-align:center;
+    align-content:center;
+}
+.child {
+    text-align: justify;
+    text-justify: inter-word;
+    word-break: keep-all;
+    vertical-align: central;
+    flex-shrink: 1;
+    align-items: center;
+    margin: 0 2.5% 0 2.5%;
+}
+.mainPart{
+    margin:0 20% 10% 20%;
+    width:60%;
+}
+.child>button{
+    height:15px;
+    width:15px;
+}
+.child > .rate {
+    display:flex;
+    justify-content:center;
+}
+a :hover{
+    text-decoration:none;
+}
+.inputform {
+    margin: 0 30% 0 30%;
+    width: 40%;
+    
+}
+.input {
+    margin:10px;
+    width:100%;
+    word-break: break-all;
+}
+div .inputbutton {
+   
+    justify-content: center;
+    display: flex;
+    color: white;
+    
+    
+}
+.inputbutton > input {
+    width:75%;
+    background-color:black;
+    
+}
+textarea {
+    height: 200px;
+}
+.inputform h1 {
+    text-align: center;
+}
+.childComment {
+    padding: 5px;
+    margin-left: 50px;
+    border-left: 1px solid #999999;
+}
+.topComment {
+    padding-left: 5px;
+    border-left: 1px solid #999999;
+}
+hr {
+    background: #999999;
+}

@@ -1,0 +1,29 @@
+﻿@model ArticleModel
+<div class='parent'>
+    <div class='child'>
+        <h3>
+            <a href="Article/@Model.Id"> @Model.Header</a>
+        </h3>
+        <h4>@Model.AutorName</h4>
+        <p> 
+            @{
+                if (Model.Content.Length > 250)
+                {
+                    var ContentCut = String.Concat(Model.Content.Take(250)) + "...";
+                    <text>
+                        @ContentCut
+                    </text>
+                }
+                else
+                { 
+                    <text>
+                    @Model.Content
+                    </text>
+                }
+            }
+        </p>
+        <p>
+            @Model.CreationDate
+        </p>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+﻿@model List<ArticleModel>
+<div class="mainPart">
+@{
+    foreach (ArticleModel ArticleModel in Model)
+    {
+        await Html.RenderPartialAsync("_DemoArticle",ArticleModel);
+    }   
+}
+</div>

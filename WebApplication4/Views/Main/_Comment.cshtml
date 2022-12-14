@@ -1,0 +1,60 @@
+﻿@model CommentModel
+<div>
+    @{
+        if (Model.Content != null)
+        {
+            <text>
+                <h5>
+                    @Model.AuthorName
+                </h5>
+                @Model.Content
+            </text>
+        }
+    }
+    <p>
+        @{
+            if (Model.Content != null)
+            {
+                <text>
+                    @Model.CreationDate
+                    <hr />
+                </text>
+            }
+        }
+    </p>
+
+    @{
+        if (User.Identity.IsAuthenticated)
+        {
+            <text>
+                <div>
+                    <form action="" method="post">
+                        <input type="text" asp-for="Content" placeholder="Your Comment" value="">
+                        <input type="text" asp-for="ParentId" value="@Model.Id" hidden="true">
+                        <input type="submit" value="Send">
+                    </form>
+                </div>
+
+            </text>
+        }
+    }
+    @{
+        List<CommentModel> models = Context.RequestServices.GetService<IDataProvider>().GetComments(Model.ArticleId);
+        foreach (CommentModel model in Model.ChildComments)
+        {
+            <text>
+                <div class="childComment">
+                    @{
+                        model.ChildComments = models.Where(x => x.ParentId == model.Id).ToList();
+                        await Html.RenderPartialAsync("_Comment", model);
+                    }
+                </div>
+            </text>
+        }
+    }
+
+
+
+
+</div>
+   

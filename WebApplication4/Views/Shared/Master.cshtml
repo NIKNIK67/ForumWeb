@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="~/js/ScriptBase.js"></script>
+  <link rel="stylesheet" href="~/css/mainStyle.css" asp-append-version="true" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <meta name="description" content="Webpage description goes here" />
+  <meta charset="utf-8">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Main" asp-action="Index">QuestionCOM</a>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Main" asp-action="Index">Home</a>
+                    </li>
+                    @{
+                     if (!Context.User.Identity.IsAuthenticated)
+                     {
+                                 <text>
+                                 <li>
+                                     <a class="nav-link text-dark" asp-area="" asp-controller="Main" asp-action="Login">Login</a>
+                                 </li>
+                                 <li>
+                                     <a class="nav-link text-dark" asp-area="" asp-controller="Main" asp-action="Register">Register</a>
+                                 </li>
+                                 </text>
+                     }
+                     if (Context.User.Identity.IsAuthenticated)
+                     {
+                                 <text>
+                                 <li>
+                                     <a class="nav-link text-dark" asp-area="" asp-controller="Main" asp-action="CreateArticle">Ask question</a>
+                                 </li>
+                                 </text>
+                     }
+                    }
+                </ul>
+            </div>
+            <div>
+                <ul class="navbar-nav flex-grow-1">
+
+                        @{
+                            <text><div class="nav-link text-dark">@Context.User.Identity.Name</div></text>
+                        }
+                    
+                        @{
+                            if (Context.User.Identity.IsAuthenticated)
+                            {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Main" asp-action="LogOut">Log Out</a>
+                            }
+                        }
+                   
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+    <content>
+        
+        @RenderBody()
+    </content>
+</body>
+</html>

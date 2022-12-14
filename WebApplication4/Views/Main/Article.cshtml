@@ -1,0 +1,27 @@
+﻿@model ArticleModel
+<div class="mainPart">
+    <div class="articleHeader">
+        <h1>@Model.Header</h1>
+        <h3>@Model.AutorName</h3>
+    </div>
+    <hr />
+    <p>
+        @Model.Content
+    </p>
+    <hr>
+    <h4>Comments</h4>
+    <div class="topComment">
+    @{
+       
+        if (User.Identity.IsAuthenticated)
+        await Html.RenderPartialAsync("_Comment", new CommentModel(){Id = -1,ChildComments = new List<CommentModel>()} );
+        List<CommentModel> models = Context.RequestServices.GetService<IDataProvider>().GetComments(Model.Id);
+        foreach (CommentModel model in models.Where(x => x.ParentId == -1))
+        {
+            model.ChildComments = models.Where(x => x.ParentId == model.Id).ToList();
+            await Html.RenderPartialAsync("_Comment", model);
+        }
+
+    }
+    </div>
+</div>
